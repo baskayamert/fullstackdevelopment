@@ -17,8 +17,7 @@ export class SearchTextParameterGuard implements CanActivate {
 
     return this.cityService.getCitiesBySearchText(searchTextParam).pipe(
       switchMap((res : ApiResponseModel<GetCityDto[]>) => {
-        console.log(Number.isNaN(searchTextParam))
-        if(!Number.isNaN(searchTextParam)) {
+        if(!isNaN(searchTextParam)) {
           this.router.navigate([`/cities`]); // Redirect to a different route for invalid parameters
           return of(false)
         }
