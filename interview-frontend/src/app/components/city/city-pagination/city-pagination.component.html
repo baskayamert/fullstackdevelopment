@@ -1,0 +1,98 @@
+<!-- Pagination Starts -->
+<div *ngIf="getPageNumbers().length > 0">
+    <div class="d-flex justify-content-center">
+        <nav aria-label="Page navigation example">
+            <ul class="pagination">
+                <!-- Left Arrow Starts -->
+                <li class="page-item">
+                    <!-- Clickable Left Arrow Starts -->
+                    <div *ngIf="currentPageNumber - 1 > 0; else unClickableLeftArrow">
+                        <!-- (If Search Text Exists) Starts -->
+                        <div *ngIf="currentSearchText !== null && currentSearchText !== undefined && currentSearchText.length > 0; else leftArrowWithoutSearchText">
+                            <a class="page-link" href="cities/searchResult/{{currentSearchText}}/{{currentPageNumber-1}}" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </div>
+                        <!-- (If Search Text Exists) Ends -->
+                        <!-- (If Search Text Does Not Exist) Starts -->
+                        <ng-template #leftArrowWithoutSearchText>
+                            <a class="page-link" href="cities/{{currentPageNumber-1}}" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </ng-template>
+                        <!-- (If Search Text Does Not Exist) Ends -->
+                    </div>
+                    <!-- Clickable Left Arrow Ends -->
+                    <!-- Unclickable Left Arrow Starts -->
+                    <ng-template #unClickableLeftArrow>
+                        <a class="page-link" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </ng-template>
+                    <!-- Unclickable Left Arrow Ends -->
+                </li>
+                <!-- Left Arrow Ends -->
+                <!-- Page Numbers Start -->
+                <div *ngFor="let num of getPageNumbers()">
+                    <!-- (If Search Text Exists) Starts -->
+                    <div *ngIf="currentSearchText !== null && currentSearchText !== undefined && currentSearchText.length > 0; else pageNumberWithoutSearchText">
+                        <!-- Unclickable Page Number Starts -->
+                        <div *ngIf="currentPageNumber === num; else clickablePageNumber">
+                            <li class="page-item unclickablePageNumber"><a class="page-link">{{num}}</a></li>
+                        </div>
+                        <!-- Unclickable Page Number Ends -->
+                        <!-- Clickable Page Number Starts -->
+                        <ng-template #clickablePageNumber>
+                            <li class="page-item"><a class="page-link" href="cities/searchResult/{{currentSearchText}}/{{num}}">{{num}}</a></li>
+                        </ng-template>
+                        <!-- Clickable Page Number Ends -->
+                    </div>
+                    <!-- (If Search Text Exists) Ends -->
+                    <!-- (If Search Text Does Not Exist) Starts -->
+                    <ng-template #pageNumberWithoutSearchText>
+                        <!-- Unclickable Page Number Starts -->
+                        <div *ngIf="currentPageNumber === num; else clickablePageNumber2">
+                            <li class="page-item unclickablePageNumber"><a class="page-link">{{num}}</a></li>
+                        </div>
+                        <!-- Unclickable Page Number Ends -->
+                        <!-- Clickable Page Number Starts -->
+                        <ng-template #clickablePageNumber2>
+                            <li class="page-item"><a class="page-link" href="cities/{{num}}">{{num}}</a></li>
+                        </ng-template>
+                        <!-- Clickable Page Number Ends -->
+                    </ng-template>
+                    <!-- (If Search Text Does Not Exist) Ends -->
+                </div>
+                <!-- Page Numbers End -->
+                <!-- Right Arrow Starts -->
+                <li class="page-item">
+                    <!-- Clickable Right Arrow Starts -->
+                    <div *ngIf="currentPageNumber + 1 <= maxPageValue; else unClickableRightArrow">
+                        <!-- (If Search Text Exists) Starts -->
+                        <div *ngIf="currentSearchText !== null && currentSearchText !== undefined && currentSearchText.length > 0; else rightArrowWithoutSearchText">
+                            <a class="page-link" href="cities/searchResult/{{currentSearchText}}/{{currentPageNumber+1}}" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </div>
+                        <!-- (If Search Text Exists) Ends -->
+                        <!-- (If Search Text Does not Exist) Starts -->
+                        <ng-template #rightArrowWithoutSearchText>
+                            <a class="page-link" href="cities/{{currentPageNumber+1}}" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </ng-template>
+                        <!-- (If Search Text Does not Exist) Ends -->
+                    </div>
+                    <!-- Clickable Right Arrow Ends -->
+                    <ng-template #unClickableRightArrow>
+                        <a class="page-link" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </ng-template>    
+                </li>
+                <!-- Right Arrow Ends -->
+            </ul>
+        </nav>
+    </div>
+</div>
+<!-- Pagination Ends -->
