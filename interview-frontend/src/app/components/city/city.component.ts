@@ -88,7 +88,7 @@ export class CityComponent implements OnInit {
   }
   navigateToSearchText(searchText:string){
     this.currentSearchText = searchText;
-    this.router.navigate([`/cities/searchResult/${searchText}`])
+    this.router.navigate([`/cities/searchResult/${searchText}`]);
     this.getCitiesBySearchText(searchText);
   }
   getCitiesBySearchText(searchText:string){

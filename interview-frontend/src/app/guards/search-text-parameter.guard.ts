@@ -17,11 +17,7 @@ export class SearchTextParameterGuard implements CanActivate {
 
     return this.cityService.getCitiesBySearchText(searchTextParam).pipe(
       switchMap((res : ApiResponseModel<GetCityDto[]>) => {
-        if(!isNaN(searchTextParam)) {
-          this.router.navigate([`/cities`]); // Redirect to a different route for invalid parameters
-          return of(false)
-        }
-
+  
         const isValid = this.areParametersValid(pageNumParam , res);
 
         if (isValid) {
@@ -48,7 +44,9 @@ export class SearchTextParameterGuard implements CanActivate {
         maxPageValue = city.pageNumber;
       }
     }
-    if(pageNumParam > maxPageValue) return false
+    if(cities.length > 0){
+      if(pageNumParam > maxPageValue) return false
+    }
     if(pageNumParam < 1) return false;
     if(Number.isNaN(pageNumParam)) return false;
     return true;
