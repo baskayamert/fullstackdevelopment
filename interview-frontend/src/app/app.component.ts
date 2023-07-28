@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { APPLICATION_TITLE, FOOTER_TEXT } from './common/constants/app.constants';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +7,6 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'interview-frontend';
+  applicationTitle = APPLICATION_TITLE;
+  footerText = FOOTER_TEXT;
 }
