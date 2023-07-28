@@ -6,7 +6,7 @@ import { plainToClass } from 'class-transformer';
 import { CITY_NUMBER_FOR_EACH_PAGE, FILE_PATH } from 'src/common/constants/app.config';
 
 @Injectable()
-export class CitiesService {
+export class CityService {
   cityNumberForEachPage = CITY_NUMBER_FOR_EACH_PAGE;
 
   private readJsonFile(): Promise<City[]> {
