@@ -1,0 +1,10 @@
+.black-link {
+    color: rgb(80, 58, 58);
+    text-decoration: none;
+    transition: background-color 0.3s; /* Add a smooth transition effect */
+}
+.black-link:hover {
+    background-color: rgba(216, 198, 198, 0.867); /* Set the background color when hovering over the link */
+    border-radius: 15px;
+    padding: 6px;
+  }
