@@ -1,4 +1,4 @@
-export const APPLICATION_TITLE = "Home"
+export const HOME_TEXT = "Home"
 export const FOOTER_TEXT = "2023 Interview Frontend. All rights reserved."
 export const GREETING_TEXT = "Welcome To Germany!"
 export const SEARCHBAR_TEXT = "Search for a city..."
