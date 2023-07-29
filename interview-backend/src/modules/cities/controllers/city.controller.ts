@@ -20,47 +20,41 @@ export class CityController {
       }
       res.status(HttpStatus.OK).send(apiResponse);
     } catch(error) {
-      if (error.code === 'BAD_REQUEST') {
-        let apiResponse : ApiResponseModel<GetCityDto[]> = {
-          message: API_RESPONSE_TEXTS.BAD_REQUEST,
-          data: null
-        }
-        res.status(HttpStatus.BAD_REQUEST).send(apiResponse);
-      } else {
-        let apiResponse : ApiResponseModel<GetCityDto[]> = {
-          message: API_RESPONSE_TEXTS.INTERNAL_ERROR,
-          data: null
-        }
-        res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(apiResponse);
+      
+      let apiResponse : ApiResponseModel<GetCityDto[]> = {
+        message: API_RESPONSE_TEXTS.INTERNAL_ERROR,
+        data: null
       }
+      res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(apiResponse);
+      
     }
 
   }
 
   @Get(':searchText')
   @HttpCode(HttpStatus.OK)
-  async getCitiesBySearchText(@Param('searchText') searchText, @Res() res: Response){
+  async getCitiesBySearchText(@Param('searchText') searchText: string, @Res() res: Response){
     try {
       const cities = await this.citiesService.getCitiesBySearchText(searchText);
-      let apiResponse : ApiResponseModel<GetCityDto[]> = {
-        message: API_RESPONSE_TEXTS.SUCCESS,
-        data: cities
-      }
-      res.status(HttpStatus.OK).send(apiResponse);
-    } catch(error) {
-      if (error.code === 'BAD_REQUEST') {
-        let apiResponse : ApiResponseModel<GetCityDto[]> = {
-          message: API_RESPONSE_TEXTS.BAD_REQUEST,
-          data: null
-        }
-        res.status(HttpStatus.BAD_REQUEST).send(apiResponse);
-      } else {
+      if(cities === null) {
         let apiResponse : ApiResponseModel<GetCityDto[]> = {
           message: API_RESPONSE_TEXTS.INTERNAL_ERROR,
           data: null
         }
         res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(apiResponse);
       }
+      let apiResponse : ApiResponseModel<GetCityDto[]> = {
+        message: API_RESPONSE_TEXTS.SUCCESS,
+        data: cities
+      }
+      res.status(HttpStatus.OK).send(apiResponse);
+    } catch(error) { 
+      let apiResponse : ApiResponseModel<GetCityDto[]> = {
+        message: API_RESPONSE_TEXTS.INTERNAL_ERROR,
+        data: null
+      }
+      res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(apiResponse);
+      
     }
 
   }
