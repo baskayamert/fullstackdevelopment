@@ -7,6 +7,8 @@ import { CityComponent } from './components/city/city.component';
 import { HttpClientModule } from '@angular/common/http';
 import { CityPaginationComponent } from './components/city/city-pagination/city-pagination.component';
 import { HomeComponent } from './components/home/home.component';
+import { NavComponent } from './components/nav/nav.component';
+import { FooterComponent } from './components/footer/footer.component';
 
 @NgModule({
   declarations: [
@@ -14,6 +16,8 @@ import { HomeComponent } from './components/home/home.component';
     CityComponent,
     CityPaginationComponent,
     HomeComponent,
+    NavComponent,
+    FooterComponent,
   ],
   imports: [
     BrowserModule,
