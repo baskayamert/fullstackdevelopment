@@ -1,19 +1,6 @@
 import { Test, TestingModule } from "@nestjs/testing";
 import { CityService } from "./city.service";
-
-// jest.mock('./city.service', () => {
-//     let cities: City[] = [];
-//     return {
-//         CityService: jest.fn().mockImplementation(() => ({
-//             readJsonFile: jest.fn().mockResolvedValue(
-//                 cities = [
-
-//                 ]),
-//         })),
-//     };
-// });
-
-
+import { CITY_NUMBER_FOR_EACH_PAGE } from "src/common/constants/app.config";
 
 describe('CityService', () => {
     let cityService: CityService;
@@ -56,7 +43,7 @@ describe('CityService', () => {
         const citiesDto = await cityService.getCities();
 
         for(let i = 0, j = 0; i < citiesDto.length; i++) {
-            if(i != 0 && i % (5) === 0) {
+            if(i != 0 && i % (CITY_NUMBER_FOR_EACH_PAGE) === 0) {
                 j++;
             }
             expect(citiesDto[i].pageNumber).toEqual(j+1);
