@@ -13,7 +13,7 @@ import { of } from 'rxjs';
 
 
 describe('CityComponent', () => {
-  fdescribe('CityComponent HTML', () => {
+  describe('CityComponent HTML', () => {
     let cityServiceSpy : jasmine.SpyObj<CityService> = jasmine.createSpyObj<CityService>(['getCities', 'getCitiesBySearchText']);
     let routerSpy : jasmine.SpyObj<Router> = jasmine.createSpyObj<Router>(['navigate']);
     let mockActivatedRoute : ActivatedRoute;
