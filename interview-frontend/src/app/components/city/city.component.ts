@@ -30,6 +30,8 @@ export class CityComponent implements OnInit {
   constructor(private cityService: CityService, private route: ActivatedRoute, private router: Router) {}
 
   ngOnInit(): void {
+    this.currentPageNumber = this.route.snapshot.params['pageNumber'];
+    this.currentPageNumber = +this.currentPageNumber;
     this.currentSearchText = this.route.snapshot.params["searchText"];
     if(this.currentSearchText !== null && this.currentSearchText !== undefined){
       this.getCitiesBySearchText(this.currentSearchText);
@@ -56,12 +58,7 @@ export class CityComponent implements OnInit {
   }
 
   getCitiesByPageNumber(): void {
-    this.route.paramMap.subscribe(params => {
-      this.currentPageNumber = params.get('pageNumber') ?? 1;
-      this.currentPageNumber = +this.currentPageNumber;
-      this.citiesByPageNumber = this.cities.filter(x => x.pageNumber === this.currentPageNumber);
-    });
-    
+    this.citiesByPageNumber = this.cities.filter(x => x.pageNumber === this.currentPageNumber);
   }
 
   calculateTotalPage(): number {
