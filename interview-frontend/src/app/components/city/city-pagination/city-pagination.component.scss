@@ -1,7 +1,11 @@
-.unclickablePageNumber {
-    background-color: black;
+.currentPageNumber {
+    background-color: rgb(141, 140, 140);
 }
 
 .page-link {
     color: black;
+}
+
+.clickablePageNumber:hover {
+    background-color: rgb(141, 140, 140);
 }

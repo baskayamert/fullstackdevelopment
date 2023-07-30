@@ -9,14 +9,14 @@
                     <div *ngIf="currentPageNumber - 1 > 0; else unClickableLeftArrow">
                         <!-- (If Search Text Exists) Starts -->
                         <div *ngIf="currentSearchText !== null && currentSearchText !== undefined && currentSearchText.length > 0; else leftArrowWithoutSearchText">
-                            <a class="page-link" href="cities/searchResult/{{currentSearchText}}/{{currentPageNumber-1}}" aria-label="Previous">
+                            <a class="page-link clickablePageNumber" href="cities/searchResult/{{currentSearchText}}/{{currentPageNumber-1}}" aria-label="Previous">
                                 <span aria-hidden="true">&laquo;</span>
                             </a>
                         </div>
                         <!-- (If Search Text Exists) Ends -->
                         <!-- (If Search Text Does Not Exist) Starts -->
                         <ng-template #leftArrowWithoutSearchText>
-                            <a class="page-link" href="cities/{{currentPageNumber-1}}" aria-label="Previous">
+                            <a class="page-link clickablePageNumber" href="cities/{{currentPageNumber-1}}" aria-label="Previous">
                                 <span aria-hidden="true">&laquo;</span>
                             </a>
                         </ng-template>
@@ -38,12 +38,12 @@
                     <div *ngIf="currentSearchText !== null && currentSearchText !== undefined && currentSearchText.length > 0; else pageNumberWithoutSearchText">
                         <!-- Unclickable Page Number Starts -->
                         <div *ngIf="currentPageNumber === num; else clickablePageNumber">
-                            <li class="page-item unclickablePageNumber"><a class="page-link">{{num}}</a></li>
+                            <li class="page-item"><a class="page-link currentPageNumber">{{num}}</a></li>
                         </div>
                         <!-- Unclickable Page Number Ends -->
                         <!-- Clickable Page Number Starts -->
                         <ng-template #clickablePageNumber>
-                            <li class="page-item"><a class="page-link" href="cities/searchResult/{{currentSearchText}}/{{num}}">{{num}}</a></li>
+                            <li class="page-item"><a class="page-link clickablePageNumber" href="cities/searchResult/{{currentSearchText}}/{{num}}">{{num}}</a></li>
                         </ng-template>
                         <!-- Clickable Page Number Ends -->
                     </div>
@@ -52,12 +52,12 @@
                     <ng-template #pageNumberWithoutSearchText>
                         <!-- Unclickable Page Number Starts -->
                         <div *ngIf="currentPageNumber === num; else clickablePageNumber2">
-                            <li class="page-item unclickablePageNumber"><a class="page-link">{{num}}</a></li>
+                            <li class="page-item"><a class="page-link currentPageNumber">{{num}}</a></li>
                         </div>
                         <!-- Unclickable Page Number Ends -->
                         <!-- Clickable Page Number Starts -->
                         <ng-template #clickablePageNumber2>
-                            <li class="page-item"><a class="page-link" href="cities/{{num}}">{{num}}</a></li>
+                            <li class="page-item"><a class="page-link clickablePageNumber" href="cities/{{num}}">{{num}}</a></li>
                         </ng-template>
                         <!-- Clickable Page Number Ends -->
                     </ng-template>
@@ -70,14 +70,14 @@
                     <div *ngIf="currentPageNumber + 1 <= maxPageValue; else unClickableRightArrow">
                         <!-- (If Search Text Exists) Starts -->
                         <div *ngIf="currentSearchText !== null && currentSearchText !== undefined && currentSearchText.length > 0; else rightArrowWithoutSearchText">
-                            <a class="page-link" href="cities/searchResult/{{currentSearchText}}/{{currentPageNumber+1}}" aria-label="Next">
+                            <a class="page-link clickablePageNumber" href="cities/searchResult/{{currentSearchText}}/{{currentPageNumber+1}}" aria-label="Next">
                                 <span aria-hidden="true">&raquo;</span>
                             </a>
                         </div>
                         <!-- (If Search Text Exists) Ends -->
                         <!-- (If Search Text Does not Exist) Starts -->
                         <ng-template #rightArrowWithoutSearchText>
-                            <a class="page-link" href="cities/{{currentPageNumber+1}}" aria-label="Next">
+                            <a class="page-link clickablePageNumber" href="cities/{{currentPageNumber+1}}" aria-label="Next">
                                 <span aria-hidden="true">&raquo;</span>
                             </a>
                         </ng-template>
