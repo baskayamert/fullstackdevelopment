@@ -26,6 +26,6 @@ describe('NavComponent', () => {
 
   it("Navbar should have the correct title in HTML", () => {
     const data = fixture.nativeElement;
-    expect(data.querySelector('.navbar-brand').textContent).toContain(HOME_TEXT)
+    expect(data.querySelector('.navbar-home-text').textContent).toContain(HOME_TEXT)
   })
 });
