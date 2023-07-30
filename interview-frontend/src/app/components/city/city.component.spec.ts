@@ -165,12 +165,14 @@ describe('CityComponent', () => {
     });
 
     it('navigateToSearchText function should work correctly', () => {
+      cityServiceSpy.getCitiesBySearchText.and.returnValue(of(mockCitiesDtoForSearchText))
       cityServiceSpy.getCities.and.returnValue(of(mockCitiesDto))
       const component = new CityComponent(cityServiceSpy, createMockActivatedRoute("1", null), routerSpy);
       component.ngOnInit();
 
       component.navigateToSearchText("s");
       expect(mockCitiesDtoForSearchText.data).toEqual(component.cities);
+      expect(routerSpy.navigate).toHaveBeenCalledWith(["/cities/searchResult/s"])
 
     })
 
