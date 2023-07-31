@@ -1,0 +1,8 @@
+export const HOME_TEXT = "Home"
+export const FOOTER_TEXT = "2023 Interview Frontend. All rights reserved."
+export const GREETING_TEXT = "Welcome To Germany!"
+export const SEARCHBAR_TEXT = "Search for a city..."
+export const SEARCH_BUTTON_TEXT = "Search"
+export const HOMEPAGE_SURPRISE_TEXT = "Lookin for German Cities?"
+export const HOMEPAGE_WELCOME_TEXT = "Welcome!"
+export const HOMEPAGE_CLICK_TEXT = "Click to view them"
