@@ -23,17 +23,17 @@ describe('HomeComponent', () => {
   
     it("should have the correct Home Page Surprise Text", () => {
       const data = fixture.nativeElement;
-      expect(data.querySelector('.homePageSurpriseText').textContent).toContain(HOMEPAGE_SURPRISE_TEXT);
+      expect(data.querySelector('.home-page-surprise-text').textContent).toContain(HOMEPAGE_SURPRISE_TEXT);
     });
   
     it("should have the correct Home Page Welcome Text", () => {
       const data = fixture.nativeElement;
-      expect(data.querySelector('.homePageWelcomeText').textContent).toContain(HOMEPAGE_WELCOME_TEXT);
+      expect(data.querySelector('.home-page-welcome-text').textContent).toContain(HOMEPAGE_WELCOME_TEXT);
     });
   
     it("should have the correct Home Page Click Text", () => {
       const data = fixture.nativeElement;
-      expect(data.querySelector('.homePageClickText').textContent).toContain(HOMEPAGE_CLICK_TEXT);
+      expect(data.querySelector('.home-page-click-text').textContent).toContain(HOMEPAGE_CLICK_TEXT);
     });
   
   });

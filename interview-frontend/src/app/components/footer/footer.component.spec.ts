@@ -23,7 +23,7 @@ describe('FooterComponent', () => {
 
     it("should have the correct footer text", () => {
       const data = fixture.nativeElement;
-      expect(data.querySelector('.footerText').textContent).toContain(FOOTER_TEXT)
+      expect(data.querySelector('.footer-text').textContent).toContain(FOOTER_TEXT)
     });
 
   });
