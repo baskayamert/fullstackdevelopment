@@ -1,6 +1,7 @@
 import { Test, TestingModule } from "@nestjs/testing";
 import { CityService } from "./city.service";
 import { CITY_NUMBER_FOR_EACH_PAGE } from "src/common/constants/app.config";
+import { GetCityDto } from "../entities/get-city.dto";
 
 describe('CityService', () => {
     let cityService: CityService;
@@ -21,16 +22,7 @@ describe('CityService', () => {
     it('CityService should return GetCityDto type object list', async () => {
         const citiesDto = await cityService.getCities();
 
-        citiesDto.forEach(cityDto => {
-            expect(cityDto).toEqual(
-                expect.objectContaining({
-                    uuid: expect.any(String),
-                    cityName: expect.any(String),
-                    count: expect.any(Number),
-                    pageNumber: expect.any(Number),
-                })
-            )
-        });
+        expect(citiesDto[0]).toBeInstanceOf(GetCityDto);
     })
 
     it('CityService should return a list contains correct amount of elements', async () => {
