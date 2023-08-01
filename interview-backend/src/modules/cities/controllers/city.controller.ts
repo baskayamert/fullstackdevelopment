@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param, HttpCode, HttpStatus, Res } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, HttpCode, HttpStatus, Res, Query } from '@nestjs/common';
 import { GetCityDto } from '../entities/get-city.dto';
 import { Response } from 'express';
 import { ApiResponseModel } from 'src/models/api-response.model';
@@ -11,44 +11,35 @@ export class CityController {
 
   @Get()
   @HttpCode(HttpStatus.OK)
-  async getCities(@Res() res: Response){
+  async getCities(@Res() res: Response, @Query('searchText') searchText: string="", @Query('pageNumber') pageNumber: string = "-1"){
     try {
-      const cities = await this.citiesService.getCities();
       let apiResponse : ApiResponseModel<GetCityDto[]> = {
-        message: API_RESPONSE_TEXTS.SUCCESS,
-        data: cities
+        message: "",
+        data: []
       }
-      res.status(HttpStatus.OK).send(apiResponse);
+      if(pageNumber != "-1" && pageNumber != ""){
+        if(isNaN(parseInt(pageNumber))) {
+          apiResponse.message = API_RESPONSE_TEXTS.BAD_REQUEST;
+          apiResponse.data = null;
+          res.status(HttpStatus.BAD_REQUEST).send(apiResponse);
+        }
+        let cities = await this.citiesService.getCities(searchText.length > 0 ? searchText : '' ,parseInt(pageNumber));
+        
+        apiResponse.message = API_RESPONSE_TEXTS.SUCCESS;
+        apiResponse.data = cities;
+        
+        res.status(HttpStatus.OK).send(apiResponse);
+      } else {
+        let cities = await this.citiesService.getCities(searchText.length > 0 ? searchText : '');
+        
+        apiResponse.message = API_RESPONSE_TEXTS.SUCCESS;
+        apiResponse.data = cities;
+        
+        res.status(HttpStatus.OK).send(apiResponse);
+      }
+      
     } catch(error) {
       
-      let apiResponse : ApiResponseModel<GetCityDto[]> = {
-        message: API_RESPONSE_TEXTS.INTERNAL_ERROR,
-        data: null
-      }
-      res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(apiResponse);
-      
-    }
-
-  }
-
-  @Get(':searchText')
-  @HttpCode(HttpStatus.OK)
-  async getCitiesBySearchText(@Param('searchText') searchText: string, @Res() res: Response){
-    try {
-      const cities = await this.citiesService.getCitiesBySearchText(searchText);
-      if(cities === null) {
-        let apiResponse : ApiResponseModel<GetCityDto[]> = {
-          message: API_RESPONSE_TEXTS.INTERNAL_ERROR,
-          data: null
-        }
-        res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(apiResponse);
-      }
-      let apiResponse : ApiResponseModel<GetCityDto[]> = {
-        message: API_RESPONSE_TEXTS.SUCCESS,
-        data: cities
-      }
-      res.status(HttpStatus.OK).send(apiResponse);
-    } catch(error) { 
       let apiResponse : ApiResponseModel<GetCityDto[]> = {
         message: API_RESPONSE_TEXTS.INTERNAL_ERROR,
         data: null
