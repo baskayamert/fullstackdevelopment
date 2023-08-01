@@ -22,13 +22,15 @@ export class CityController {
           apiResponse.message = API_RESPONSE_TEXTS.BAD_REQUEST;
           apiResponse.data = null;
           res.status(HttpStatus.BAD_REQUEST).send(apiResponse);
+        } else {
+          let cities = await this.citiesService.getCities(searchText.length > 0 ? searchText : '' , parseInt(pageNumber));
+        
+          apiResponse.message = API_RESPONSE_TEXTS.SUCCESS;
+          apiResponse.data = cities;
+          
+          res.status(HttpStatus.OK).send(apiResponse);
         }
-        let cities = await this.citiesService.getCities(searchText.length > 0 ? searchText : '' ,parseInt(pageNumber));
         
-        apiResponse.message = API_RESPONSE_TEXTS.SUCCESS;
-        apiResponse.data = cities;
-        
-        res.status(HttpStatus.OK).send(apiResponse);
       } else {
         let cities = await this.citiesService.getCities(searchText.length > 0 ? searchText : '');
         

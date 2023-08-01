@@ -32,7 +32,7 @@ export class CityService {
 
     let pageNumberCount = 1;
 
-    if(searchText.length > 0) {
+    if(searchText?.length > 0) {
       cities = cities.filter(x => x.cityName.toLowerCase().startsWith(searchText.toLowerCase()));
     }
 
@@ -44,7 +44,7 @@ export class CityService {
       getCityDto.pageNumber = pageNumberCount;
       result.push(getCityDto);
     }
-    if(pageNumber !== -1){
+    if(pageNumber !== undefined && pageNumber !== null && pageNumber !== -1){
       result = result.filter(c => c.pageNumber === pageNumber);
     }
     return result;
