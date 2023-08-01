@@ -22,7 +22,7 @@ export class CityComponent implements OnInit {
 
   //Component Variables
   cities: GetCityDto[] = [];
-  citiesByPageNumber: GetCityDto[] = [];
+  citiesFilteredByPage: GetCityDto[] = [];
   currentPageNumber: any = {};
   maxPageValue : number = 0;
   currentSearchText: string = "";
@@ -30,52 +30,49 @@ export class CityComponent implements OnInit {
   constructor(private cityService: CityService, private route: ActivatedRoute, private router: Router) {}
 
   ngOnInit(): void {
-    this.currentPageNumber = this.route.snapshot.params['pageNumber'];
+    this.currentPageNumber = this.route.snapshot.queryParams['pageNumber'];
     this.currentPageNumber = +this.currentPageNumber;
-    this.currentSearchText = this.route.snapshot.params["searchText"];
-    if(this.currentSearchText !== null && this.currentSearchText !== undefined){
-      this.getCitiesBySearchText(this.currentSearchText);
-    } else {
-      this.getCities();
-    }
+    this.currentSearchText = this.route.snapshot.queryParams["searchText"];
+    this.getCities();
   }
 
   getCities(): void {  
-    this.cityService.getCities().subscribe({
+    this.cityService.getCities(this.currentSearchText).subscribe({
       next: (res) => {
         this.cities = res.data;
-
-        this.getCitiesByPageNumber();
+        this.citiesFilteredByPage = this.cities.filter(c => c.pageNumber === this.currentPageNumber);
 
       },
       error: (e) => {
-        console.log(e);
+        if(e.status === 400){
+          console.error("It was a bad request probably due to invalid pageNumber")
+        }
       },
       complete: () => {
         console.log('done');
+        this.calculateTotalPage();
+        
       }
     });
+    
+    
   }
 
-  getCitiesByPageNumber(): void {
-    this.citiesByPageNumber = this.cities.filter(x => x.pageNumber === this.currentPageNumber);
-  }
-
-  calculateTotalPage(): number {
+  calculateTotalPage(): void {
     this.maxPageValue = 0;
+    
     for (let city of this.cities) {
       if (city.pageNumber > this.maxPageValue) {
         this.maxPageValue = city.pageNumber;
       }
     }
-    return this.maxPageValue;
   }
 
   getPageNumbers(): number[]{
     const pageNumbers = [];
     const range = 3;
     const startPage = Math.max(1, this.currentPageNumber - range);
-    const endPage = Math.min(this.currentPageNumber + range, this.calculateTotalPage());
+    const endPage = Math.min(this.currentPageNumber + range, this.maxPageValue);
 
     for (let i = startPage; i <= endPage; i++) {
       pageNumbers.push(i);
@@ -85,23 +82,8 @@ export class CityComponent implements OnInit {
   }
   navigateToSearchText(searchText:string){
     this.currentSearchText = searchText;
-    this.router.navigate([`/cities/searchResult/${searchText}`]);
-    this.getCitiesBySearchText(searchText);
+    const url = `/cities?searchText=${searchText}&pageNumber=1`;
+    window.location.href = url;
   }
-  getCitiesBySearchText(searchText:string){
-    this.cityService.getCitiesBySearchText(searchText).subscribe({
-      next: (res) => {
-        this.cities = res.data;
 
-        this.getCitiesByPageNumber();
-
-      },
-      error: (e) => {
-        console.log(e);
-      },
-      complete: () => {
-        console.log('done');
-      }
-    });
-  }
 }

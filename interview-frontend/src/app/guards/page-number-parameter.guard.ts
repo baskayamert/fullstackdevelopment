@@ -12,24 +12,28 @@ export class PageNumberParameterGuard implements CanActivate {
   constructor(private router: Router, private http: HttpClient, private cityService: CityService) {}
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
-    const pageNumParam = +route.params['pageNumber'];
+    const pageNumParam = +route.queryParams['pageNumber'];
+    const searchTextParam = route.queryParams['searchText'];
 
-    return this.cityService.getCities().pipe(
+    return this.cityService.getCities(searchTextParam).pipe(
       switchMap((res : ApiResponseModel<GetCityDto[]>) => {
 
         const isValid = this.areParametersValid(pageNumParam , res);
 
-        if (isValid) {
-          return of(true); // Allow navigation to the requested route if parameters are valid
+        if (isValid) {    
+
+          return of(true);
         } else {
-          this.router.navigate(['/cities/1']); // Redirect to a different route for invalid parameters
+
+          const url = `/cities?pageNumber=1`;   
+          window.location.href = url;
           return of(false);
         }
       }),
       catchError(() => {
         // Handle API errors here (optional)
         // For example, you can redirect to an error page if the API call fails
-        this.router.navigate(['/error']);
+        window.location.href = '/error';
         return of(false);
       })
     );

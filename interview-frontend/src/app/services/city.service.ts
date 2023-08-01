@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from 'src/environments/environment.development';
 import { ApiResponseModel } from '../entities/api-response.model';
 import { GetCityDto } from '../entities/get-city.dto';
@@ -13,13 +13,15 @@ export class CityService {
 
   constructor(private http: HttpClient) {}
 
-  getCities() : Observable<ApiResponseModel<GetCityDto[]>> {
-    const url = `${this.apiUrl}/cities`;
-    return this.http.get<ApiResponseModel<GetCityDto[]>>(url);
-  }
+  getCities(searchText?: string, pageNumber?: string) : Observable<ApiResponseModel<GetCityDto[]>> {
+    let queryParams = new HttpParams();
 
-  getCitiesBySearchText(searchText:string) : Observable<ApiResponseModel<GetCityDto[]>> {
-    const url = `${this.apiUrl}/cities/${searchText}`;
-    return this.http.get<ApiResponseModel<GetCityDto[]>>(url);
+    queryParams = queryParams.append('searchText', searchText ?? "");
+
+    queryParams = queryParams.append('pageNumber', pageNumber ?? "");
+    
+
+    const url = `${this.apiUrl}/cities`;
+    return this.http.get<ApiResponseModel<GetCityDto[]>>(url, {params: queryParams});
   }
 }

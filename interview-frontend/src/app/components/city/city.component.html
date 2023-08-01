@@ -26,7 +26,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let city of citiesByPageNumber; let i = index">
+            <tr *ngFor="let city of citiesFilteredByPage; let i = index">
                 <th scope="row" class="text-center">{{i + 1}}</th>
                 <td class="text-center">{{city.uuid}}</td>
                 <td class="text-center">{{city.cityName}}</td>
@@ -38,7 +38,6 @@
     <!-- Pagination Starts -->
     <app-city-pagination 
     [getPageNumbers] = "getPageNumbers"
-    [calculateTotalPage] = "calculateTotalPage"
     [cities] = "cities"
     [currentSearchText] = "currentSearchText"
     [currentPageNumber] = "currentPageNumber"
