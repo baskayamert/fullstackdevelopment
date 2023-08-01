@@ -15,23 +15,23 @@ describe('CityService', () => {
         cityService = module.get<CityService>(CityService);
     });
 
-    it('CityService should be defined', () => {
+    it('should be defined', () => {
         expect(cityService).toBeDefined();
     });
 
-    it('CityService should return GetCityDto type object list', async () => {
+    it('should return GetCityDto type object list', async () => {
         const citiesDto = await cityService.getCities();
 
         expect(citiesDto[0]).toBeInstanceOf(GetCityDto);
     })
 
-    it('CityService should return a list contains correct amount of elements', async () => {
+    it('should return a list contains correct amount of elements', async () => {
         const citiesDto = await cityService.getCities();
 
         expect(citiesDto).toHaveLength(100);
     });
 
-    it('CityService should calculate page numbers correctly', async () => {
+    it('should calculate page numbers correctly', async () => {
         const citiesDto = await cityService.getCities();
 
         for(let i = 0, j = 0; i < citiesDto.length; i++) {
@@ -43,7 +43,7 @@ describe('CityService', () => {
         }
     });
 
-    it('CityService should return correct data', async () => {
+    it('should return correct data', async () => {
         const citiesDto = await cityService.getCities();
         expect(citiesDto).toEqual(
             [
@@ -151,7 +151,7 @@ describe('CityService', () => {
         )
     });
 
-    it('CityService should return cities according to provided search text', async () => {
+    it('should return cities according to provided search text', async () => {
         let citiesDto = await cityService.getCitiesBySearchText("B");
         expect(citiesDto).toEqual(
             [
@@ -176,7 +176,7 @@ describe('CityService', () => {
         )
     });
 
-    it('Search text should bring result regardless of uppercase or lowercase letters', async () => {
+    it('search text should bring result regardless of uppercase or lowercase letters', async () => {
         let citiesDto = await cityService.getCitiesBySearchText("bErLIn");
         expect(citiesDto).toEqual(
             [

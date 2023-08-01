@@ -37,7 +37,6 @@ describe('CityController', () => {
     } as any) as Response;
 
     beforeEach(async () => {
-        //jest.clearAllMocks();
 
         cityServiceSpy = {
             getCities: jest.fn(() => mockCitiesDto),
