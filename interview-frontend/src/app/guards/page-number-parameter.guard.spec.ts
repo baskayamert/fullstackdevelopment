@@ -35,7 +35,7 @@ const mockCitiesDto: ApiResponseModel<GetCityDto[]> = {
 
 describe('PageNumberParameterGuard', () => {
     let guard: PageNumberParameterGuard;
-    let cityServiceSpy: jasmine.SpyObj<CityService> = jasmine.createSpyObj<CityService>(['getCities', 'getCitiesBySearchText']);
+    let cityServiceSpy: jasmine.SpyObj<CityService> = jasmine.createSpyObj<CityService>(['getCities']);
     let routerSpy: jasmine.SpyObj<Router> = jasmine.createSpyObj<Router>(['navigate']);
     let mockActivatedRoute: ActivatedRoute;
 
@@ -44,15 +44,15 @@ describe('PageNumberParameterGuard', () => {
         routerSpy.navigate.and.callFake(() => Promise.resolve(true));
         cityServiceSpy.getCities.and.returnValue(of(mockCitiesDto));
 
-        mockActivatedRoute = createMockActivatedRoute("1", null);
+        mockActivatedRoute = createMockActivatedRoute(null, "1");
 
         TestBed.configureTestingModule({
-            providers: [PageNumberParameterGuard, { provide: ActivatedRoute, useValue: mockActivatedRoute }, { provide: CityService, useValue: cityServiceSpy }, {provide: Router, useValue: routerSpy}],
+            providers: [PageNumberParameterGuard, { provide: ActivatedRoute, useValue: mockActivatedRoute }, { provide: CityService, useValue: cityServiceSpy }, { provide: Router, useValue: routerSpy }],
             imports: [HttpClientTestingModule,
                 RouterTestingModule.withRoutes(
                     [
-                        { path: 'cities/:pageNumber', component: CityComponent, canActivate: [PageNumberParameterGuard] },
-                        { path: 'cities', redirectTo: '/cities/1'},
+                        { path: 'cities', component: CityComponent, pathMatch: 'full', canActivate: [PageNumberParameterGuard] },
+                        { path: 'cities', component: CityComponent, data: { queryParams: ['pageNumber', 'searchText'] } },
                     ]
                 )
             ]
@@ -65,7 +65,7 @@ describe('PageNumberParameterGuard', () => {
     });
 
     it('should not navigate when pageNumber is integer', () => {
-        mockActivatedRoute = createMockActivatedRoute("1", null);
+        mockActivatedRoute = createMockActivatedRoute(null, "1");
         const stateSnapshot: RouterStateSnapshot = { } as RouterStateSnapshot;
         guard.canActivate(mockActivatedRoute.snapshot, stateSnapshot).subscribe(res => {
             expect(res).toBeTrue();
@@ -73,8 +73,8 @@ describe('PageNumberParameterGuard', () => {
 
     });
 
-    it('should navigate to /cities/1 when pageNumber is string', fakeAsync(() => {
-        mockActivatedRoute = createMockActivatedRoute("asd", null);
+    it('should navigate to /cities?pageNumber=1 when pageNumber is string and searchText does not exist', fakeAsync(() => {
+        mockActivatedRoute = createMockActivatedRoute(null, "asd");
         const stateSnapshot: RouterStateSnapshot = { } as RouterStateSnapshot;
         let canActivateResult : boolean = true;
         guard.canActivate(mockActivatedRoute.snapshot, stateSnapshot).subscribe(res => {
@@ -82,12 +82,12 @@ describe('PageNumberParameterGuard', () => {
         });
         tick()
         expect(canActivateResult).toBe(false);
-        expect(routerSpy.navigate).toHaveBeenCalledWith(['/cities/1']);
+        expect(routerSpy.navigate).toHaveBeenCalledWith(['/cities'], {queryParams:{pageNumber:"1", searchText:null}});
 
     }));
 
-    it('should navigate to /cities/1 when pageNumber is greater than the greatest page number', fakeAsync(() => {
-        mockActivatedRoute = createMockActivatedRoute("5", null);
+    it('should navigate to /cities?pageNumber=1 when pageNumber is greater than the greatest page number and searchText does not exist', fakeAsync(() => {
+        mockActivatedRoute = createMockActivatedRoute(null, "5");
         const stateSnapshot: RouterStateSnapshot = { } as RouterStateSnapshot;
         let canActivateResult : boolean = true;
         guard.canActivate(mockActivatedRoute.snapshot, stateSnapshot).subscribe(res => {
@@ -95,12 +95,12 @@ describe('PageNumberParameterGuard', () => {
         });
         tick()
         expect(canActivateResult).toBe(false);
-        expect(routerSpy.navigate).toHaveBeenCalledWith(['/cities/1']);
+        expect(routerSpy.navigate).toHaveBeenCalledWith(['/cities'], {queryParams:{pageNumber:"1", searchText:null}});
 
     }));
 
-    it('should navigate to /cities/1 when pageNumber is smaller than the smallest page number', fakeAsync(() => {
-        mockActivatedRoute = createMockActivatedRoute("0", null);
+    it('should navigate to /cities?pageNumber=1 when pageNumber is smaller than the smallest page number', fakeAsync(() => {
+        mockActivatedRoute = createMockActivatedRoute(null, "0");
         const stateSnapshot: RouterStateSnapshot = { } as RouterStateSnapshot;
         let canActivateResult : boolean = true;
         guard.canActivate(mockActivatedRoute.snapshot, stateSnapshot).subscribe(res => {
@@ -108,7 +108,20 @@ describe('PageNumberParameterGuard', () => {
         });
         tick()
         expect(canActivateResult).toBe(false);
-        expect(routerSpy.navigate).toHaveBeenCalledWith(['/cities/1']);
+        expect(routerSpy.navigate).toHaveBeenCalledWith(['/cities'], {queryParams:{pageNumber:"1", searchText:null}});
+
+    }));
+
+    it('should navigate to /cities?searchText=${searchText}&pageNumber=1 when pageNumber is invalid and searchText exists', fakeAsync(() => {
+        mockActivatedRoute = createMockActivatedRoute("s", "asd");
+        const stateSnapshot: RouterStateSnapshot = { } as RouterStateSnapshot;
+        let canActivateResult : boolean = true;
+        guard.canActivate(mockActivatedRoute.snapshot, stateSnapshot).subscribe(res => {
+            canActivateResult = res;
+        });
+        tick()
+        expect(canActivateResult).toBe(false);
+        expect(routerSpy.navigate).toHaveBeenCalledWith(['/cities'], {queryParams:{pageNumber:"1", searchText:"s"}});
 
     }));
 
@@ -116,7 +129,7 @@ describe('PageNumberParameterGuard', () => {
 
 });
 
-const createMockActivatedRoute = (pageNumber: any, searchText: any): ActivatedRoute => {
+const createMockActivatedRoute = (searchText: any, pageNumber: any,): ActivatedRoute => {
     const mockParams = {
         pageNumber: pageNumber,
         searchText: searchText,
@@ -124,7 +137,7 @@ const createMockActivatedRoute = (pageNumber: any, searchText: any): ActivatedRo
 
     const mockActivatedRoute: ActivatedRoute = {
         snapshot: {
-            params: mockParams as any,
+            queryParams: mockParams as any,
         } as ActivatedRouteSnapshot,
     } as ActivatedRoute;
 

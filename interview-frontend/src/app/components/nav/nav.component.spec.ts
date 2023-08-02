@@ -20,11 +20,11 @@ describe('NavComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it("Title should be correct", () => {
+  it("should have the correct navbarHomeText in the TypeScript file", () => {
     expect(component.navbarHomeText).toEqual(HOME_TEXT);
   })
 
-  it("Navbar should have the correct title in HTML", () => {
+  it("should have the correct navbarHomeText in the HTML file", () => {
     const data = fixture.nativeElement;
     expect(data.querySelector('.navbar-home-text').textContent).toContain(HOME_TEXT)
   })
