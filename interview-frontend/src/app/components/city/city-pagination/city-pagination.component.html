@@ -25,7 +25,7 @@
                     <!-- Clickable Left Arrow Ends -->
                     <!-- Unclickable Left Arrow Starts -->
                     <ng-template #unClickableLeftArrow>
-                        <a class="page-link" aria-label="Previous">
+                        <a class="page-link unClickablePageNumber" aria-label="Previous">
                             <span aria-hidden="true">&laquo;</span>
                         </a>
                     </ng-template>
@@ -52,7 +52,7 @@
                     <ng-template #pageNumberWithoutSearchText>
                         <!-- Unclickable Page Number Starts -->
                         <div *ngIf="currentPageNumber === num; else clickablePageNumber2">
-                            <li class="page-item"><a class="page-link currentPageNumber">{{num}}</a></li>
+                            <li class="page-item"><a class="page-link currentPageNumber unClickablePageNumber">{{num}}</a></li>
                         </div>
                         <!-- Unclickable Page Number Ends -->
                         <!-- Clickable Page Number Starts -->
@@ -85,7 +85,7 @@
                     </div>
                     <!-- Clickable Right Arrow Ends -->
                     <ng-template #unClickableRightArrow>
-                        <a class="page-link" aria-label="Next">
+                        <a class="page-link unClickablePageNumber" aria-label="Next">
                             <span aria-hidden="true">&raquo;</span>
                         </a>
                     </ng-template>    
