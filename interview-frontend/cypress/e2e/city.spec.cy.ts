@@ -3,7 +3,7 @@ import { COL_1_TEXT, COL_2_TEXT, COL_3_TEXT, COL_4_TEXT } from "cypress/fixtures
 
 describe("Cities Page", () => {
     beforeEach(() => {
-        cy.visit('/cities/1');
+        cy.visit('/cities?pageNumber=1');
     });
 
     it("should have all the texts correctly", () => {
@@ -54,18 +54,38 @@ describe("Cities Page", () => {
         
     });
 
+    it("should have cities correctly", () => {
+        const citiesFilteredByPage = [
+            { uuid: "7e8a29e2-62d1-4ec1-ae15-8ff2f777318f", cityName: "Berlin", count: 523, pageNumber: 1 },
+            { uuid: "4a7f5c2d-3a10-4a02-a9b3-450839929e43", cityName: "Hamburg", count: 267, pageNumber: 1 },
+            { uuid: "09a20ce8-eb77-40f9-99c8-aa4e7dbf6a99", cityName: "München", count: 899, pageNumber: 1 },
+            { uuid: "0a40416f-aa4c-4b8b-8ce3-e82e664a4cd1", cityName: "Köln", count: 471, pageNumber: 1 },
+            { uuid: "e1ad9f95-44b5-4d80-8b26-df42a53fcfb6", cityName: "Frankfurt", count: 110, pageNumber: 1 },
+        ];
+
+        cy.get('table tbody tr').should('have.length', citiesFilteredByPage.length);
+
+        citiesFilteredByPage.forEach((city, index) => {
+            cy.get(`table tbody tr:eq(${index})`)
+              .should('contain.text', `${index + 1}`)
+              .and('contain.text', city.uuid)
+              .and('contain.text', city.cityName)
+              .and('contain.text', city.count);
+          });
+    });
+
     it('should redirect inappropriate urls', () => {
-        cy.visit("/cities/10000");
-        cy.url().should('include', "/cities/1");
+        cy.visit("/cities?pageNumber=10000");
+        cy.url().should('include', "/cities?pageNumber=1");
 
-        cy.visit("/cities/asd");
-        cy.url().should('include', "/cities/1");
+        cy.visit("/cities?pageNumber=asd");
+        cy.url().should('include', "/cities?pageNumber=1");
 
-        cy.visit("/cities/searchResult//1");
-        cy.url().should('include', "/cities/1");
+        cy.visit("/cities?searchText=&pageNumber=1");
+        cy.url().should('include', "/cities?searchText=&pageNumber=1");
 
-        cy.visit("/cities/searchResult/s/s");
-        cy.url().should('include', "/cities/searchResult/s/1");
+        cy.visit("/cities?searchText=s&pageNumber=s");
+        cy.url().should('include', "/cities?searchText=s&pageNumber=1");
     })
 
     describe("Pagination", () => {
@@ -128,7 +148,7 @@ describe("Cities Page", () => {
 
     describe('Search', () => {
         beforeEach(() => {
-            cy.visit('/cities/1');
+            cy.visit('/cities?pageNumber=1');
         })
         it('should search and navigate to the correct URL', () => {
           const searchText = 's'; 
@@ -137,7 +157,7 @@ describe("Cities Page", () => {
       
           cy.get('button.search-button').click();
       
-          cy.url().should('include', `cities/searchResult/${searchText}`);
+          cy.url().should('include', `cities?searchText=${searchText}&pageNumber=1`);
       
         });
 

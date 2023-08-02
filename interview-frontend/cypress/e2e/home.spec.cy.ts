@@ -35,10 +35,10 @@ describe('Home Page', () => {
 
   })
 
-  it('should go to "cities/1" if "Click to view them is" is clicked', () => {
+  it('should go to "cities?pageNumber=1" if "Click to view them is" is clicked', () => {
     
     cy.get(".home-page-click-text").click();
-    cy.url().should('includes', '/cities/1')
+    cy.url().should('includes', '/cities?pageNumber=1')
 
   })
 
