@@ -82,8 +82,9 @@ export class CityComponent implements OnInit {
   }
   navigateToSearchText(searchText:string){
     this.currentSearchText = searchText;
-    const url = `/cities?searchText=${searchText}&pageNumber=1`;
-    window.location.href = url;
+
+    this.router.navigate(["/cities"], {queryParams:{searchText:searchText, pageNumber:'1'}});
+    this.getCities();
   }
 
 }

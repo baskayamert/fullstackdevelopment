@@ -25,15 +25,12 @@ export class PageNumberParameterGuard implements CanActivate {
           return of(true);
         } else {
 
-          const url = `/cities?pageNumber=1`;   
-          window.location.href = url;
+          this.router.navigate(["/cities"], {queryParams:{searchText:searchTextParam, pageNumber:'1'}});
           return of(false);
         }
       }),
       catchError(() => {
-        // Handle API errors here (optional)
-        // For example, you can redirect to an error page if the API call fails
-        window.location.href = '/error';
+        this.router.navigate(["/error"]);
         return of(false);
       })
     );
